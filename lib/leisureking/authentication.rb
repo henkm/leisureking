@@ -1,0 +1,31 @@
+module LeisureKing::Authentication
+	require 'digest'
+  require 'base64'
+  require 'openssl'
+
+  # The communication layer implements all the methods available in the LeisureKing API
+  class << self
+    attr_accessor :token
+
+    # Set's the default value's to nil and false
+    # @return [Hash] conguration options
+    def init!
+      @defaults = {
+        :@token    => nil,
+      }
+    end
+
+    def get_token
+      body = {
+        apikey: LeisureKing::Config.api_key,
+        secret: LeisureKing::Config.api_secret
+      }
+      result = LeisureKing::API.send_request("authenticate", body)
+      if result["status"] && result["status"] == "OK"
+        self.token = result["data"]["token"]
+      end
+      return result
+    end
+  end
+  init!
+end

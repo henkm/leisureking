@@ -27,9 +27,30 @@ Or install it yourself as:
 
     $ gem install leisureking
 
+## Configuration
+
+First, obtain an API key and shared secret from LeisureKing. Set it up like this:
+```ruby
+LeisureKing::Config.api_key      = "MY-API-KEY"
+LeisureKing::Config.api_secret   = "MY-API-SHARED-SECRET" # pubic key
+```
+
+To use this gem in a Rails project:
+```ruby
+# config/development.rb
+config.leisure_king.api_key     = "MY-API-KEY"
+config.leisure_king.api_secret  = "MY-API-SECRET"
+
+```
+
 ## Usage
 
-TODO: Write usage instructions here
+All there is left is to use the API according to the documentation:
+
+```ruby
+LeisureKing::API.send_request("assortiment/getassortimentdatabyassortimentid", {id_assortiment: 5625})
+# => Returns Hash from JSON response
+```
 
 ## Development
 

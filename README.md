@@ -32,7 +32,7 @@ Or install it yourself as:
 First, obtain an API key and shared secret from LeisureKing. Set it up like this:
 ```ruby
 LeisureKing::Config.api_key      = "MY-API-KEY"
-LeisureKing::Config.api_secret   = "MY-API-SHARED-SECRET" # pubic key
+LeisureKing::Config.api_secret   = "MY-API-SHARED-SECRET"
 ```
 
 To use this gem in a Rails project:

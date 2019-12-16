@@ -16,9 +16,11 @@ module LeisureKing::API
       url = "#{base_uri}/#{endpoint}"
       body[:environment] = LeisureKing::Config.environment
       begin
-        unless endpoint == "authenticate"
+
+        unless LeisureKing::Authentication.has_valid_api_key || endpoint == "authenticate"
           LeisureKing::Authentication.get_token
         end
+
         if LeisureKing::Config.verbose
           puts "Sending request to #{url}"
           puts "Body:\n#{body}" if body

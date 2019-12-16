@@ -1,5 +1,6 @@
 module LeisureKing::Authentication
-	require 'digest'
+  require 'digest'
+  require 'jwt'
   require 'base64'
   require 'openssl'
 
@@ -26,6 +27,18 @@ module LeisureKing::Authentication
       end
       return result
     end
+
+  # Parses the current API key and checks if the 'exp' attribute
+    # represents a date in the future.
+    def has_valid_api_key
+      return self.token != nil && api_key_valid_until > Time.now
+    end
+
+    def api_key_valid_until
+      decoded_token = JWT.decode self.token, nil, false
+      Time.at(decoded_token.first["exp"])
+    end
+
   end
   init!
 end

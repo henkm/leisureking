@@ -27,6 +27,18 @@ RSpec.describe LeisureKing::Authentication do
       expect(LeisureKing::Authentication.token.length).to be > 200
     end
   end
+
+  describe ".has_valid_api_key" do
+    it "has a date in the future" do
+      puts Time.now
+      puts LeisureKing::Authentication.api_key_valid_until
+      expect(LeisureKing::Authentication.api_key_valid_until).to be > Time.now
+    end
+    
+    it "returns a true if the API keys has a date in the future" do
+      expect(LeisureKing::Authentication.has_valid_api_key).to be true
+    end
+  end
   
 
 end

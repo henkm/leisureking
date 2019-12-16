@@ -1,7 +1,7 @@
-# Leisureking
+# LeisureKing
 
 
-This gem works as a simple Ruby wrapper for the Leisureking API. The Leisureking API has a very straight forward REST API. 
+This gem works as a simple Ruby wrapper for the LeisureKing API. The LeisureKing API has a very straight forward REST API, this gem doesn't aim to replace it. It just acts as a 'ruby-esqe' interface to it. 
 
 All this gem does, is make it a little bit simpler to use the API:
 - You can set your credentials via Rails config
@@ -40,6 +40,7 @@ To use this gem in a Rails project:
 # config/development.rb
 config.leisure_king.api_key     = "MY-API-KEY"
 config.leisure_king.api_secret  = "MY-API-SECRET"
+config.leisure_king.verbose     = false # set to true to show the inputs and outpts of each request
 
 ```
 

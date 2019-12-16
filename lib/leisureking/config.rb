@@ -8,6 +8,7 @@ module ::LeisureKing::Config
     attr_accessor :api_secret
     attr_accessor :verbose
     attr_accessor :api_version
+    attr_accessor :api_base_url
     attr_accessor :environment
     attr_accessor :client_email  # Who is making the request? For optional HTTP Header
     
@@ -21,6 +22,7 @@ module ::LeisureKing::Config
         :@api_secret    => nil,
         :@verbose       => false,
         :@environment   => :test,
+        :@api_base_url  => 'https://api.leisureking.eu',
         :@client_email  => '',
         :@api_version   => '1l'
       }

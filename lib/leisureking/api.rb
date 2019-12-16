@@ -17,22 +17,26 @@ module LeisureKing::API
       body[:environment] = LeisureKing::Config.environment
       begin
 
-        unless LeisureKing::Authentication.has_valid_api_key || endpoint == "authenticate"
-          LeisureKing::Authentication.get_token
+        unless LeisureKing::Authentication.has_valid_api_key
+          unless endpoint == "authenticate"
+            puts "Requesting new API Token" if LeisureKing::Config.verbose
+            LeisureKing::Authentication.get_token
+          end
         end
 
         if LeisureKing::Config.verbose
           puts "Sending request to #{url}"
-          puts "Body:\n#{body}" if body
+          puts "Body:\n#{body.to_json}" if body
         end
 
         begin
-          result = RestClient.post(url, body.to_json, headers) do |response, request, res, &block|
+          result = RestClient.post(url, body, headers) do |response, request, res, &block|
             if [301, 302, 307].include? response.code
               redirected_url = response.headers[:location]
               if LeisureKing::Config.verbose
                 puts "Redirecting request to #{redirected_url}"
-                puts "Body:\n#{body}" if body
+                puts "Headers:\n#{headers.to_json}" if headers
+                puts "Body:\n#{body.to_json}" if body
               end
               RestClient.post(redirected_url, body.to_json, headers)
             else
@@ -40,15 +44,16 @@ module LeisureKing::API
             end
           end
         rescue RestClient::Unauthorized, RestClient::Forbidden => err
-          raise "Access denied. API Response:\n#{err}"
+          if LeisureKing::Config.verbose
+            puts "Backtrace:" 
+            puts err.backtrace
+          end
+          raise "Access denied. API Response:\n#{err}."
         end
 
         puts "Result:\n#{result}" if LeisureKing::Config.verbose
-        # begin
         return JSON.parse(result)
-        # rescue
-        #   return result
-        # end
+
       rescue RestClient::BadRequest => err
         raise "Bad Request. API Response:\n#{err.response}"
       end
@@ -66,7 +71,7 @@ module LeisureKing::API
       if LeisureKing::Config.client_email && LeisureKing::Config.client_email != ''
         h[:from] = LeisureKing::Config.client_email   # email address for human communication
       end
-      if LeisureKing::Authentication.token
+      if LeisureKing::Authentication.has_valid_api_key
         h["Authorization"] = "Token #{LeisureKing::Authentication.token}"
       end
       return h

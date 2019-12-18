@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    leisureking (0.1.0)
+    leisureking (0.1.3)
       jwt
       rest-client
 

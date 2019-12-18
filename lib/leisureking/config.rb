@@ -20,7 +20,7 @@ module ::LeisureKing::Config
       @defaults = {
         :@api_key       => nil,
         :@api_secret    => nil,
-        :@verbose       => false,
+        :@verbose       => true,
         :@environment   => :test,
         :@api_base_url  => 'https://api.leisureking.eu',
         :@client_email  => '',

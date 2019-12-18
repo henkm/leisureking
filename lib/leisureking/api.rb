@@ -30,7 +30,7 @@ module LeisureKing::API
         end
 
         begin
-          result = RestClient.post(url, body, headers) do |response, request, res, &block|
+          result = RestClient.post(url, body.to_json, headers) do |response, request, res, &block|
             if [301, 302, 307].include? response.code
               redirected_url = response.headers[:location]
               if LeisureKing::Config.verbose
@@ -40,7 +40,9 @@ module LeisureKing::API
               end
               RestClient.post(redirected_url, body.to_json, headers)
             else
-              response.return!(request, res, &block)
+              # puts "Response: #{response}"
+              # response.return!(request, res, &block)
+              response.return!
             end
           end
         rescue RestClient::Unauthorized, RestClient::Forbidden => err
